@@ -3,6 +3,7 @@
 
 #include <string>
 #include <utility>
+#include <iostream>
 
 class Ingredient
 {
@@ -27,7 +28,7 @@ public:
         return 0.0;
     }
 
-    void refill(double amountToRefill)
+    virtual void refill(double amountToRefill)
     {
         if (amountToRefill > 0.0)
         {
@@ -49,6 +50,44 @@ public:
     {
         Ingredient::use(amountNeeded);
         return amountNeeded * (m_calcium_mgl / 1000.0);
+    }
+};
+
+class Coffee : public Ingredient
+{
+private:
+    std::string m_roastDegree;
+
+public:
+    Coffee(double amt, std::string roast)
+        : Ingredient("Coffee", amt), m_roastDegree(std::move(roast)) {}
+
+    std::string getRoastDegree() const { return m_roastDegree; }
+};
+
+class Milk : public Ingredient
+{
+private:
+    double m_expirationTime;
+
+public:
+    Milk(double amt, double expTime)
+        : Ingredient("Milk", amt), m_expirationTime(expTime) {}
+
+    double getExpirationTime() const { return m_expirationTime; }
+
+    void refill(double amountToRefill) override
+    {
+        Ingredient::refill(amountToRefill);
+        m_expirationTime = 7.0;
+    }
+
+    void checkExpiration() const
+    {
+        if (m_expirationTime <= 0.0)
+        {
+            std::cout << " Warning: The milk has expired! Please refill to refresh.\n";
+        }
     }
 };
 
