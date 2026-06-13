@@ -16,23 +16,23 @@ public:
 
     virtual ~Ingredient() = default;
 
-    std::string getName() const { return m_name; }
-    double getAmount() const { return m_amount_g; }
+    std::string get_name() const { return m_name; }
+    double get_amount() const { return m_amount_g; }
 
-    virtual double use(double amountNeeded)
+    virtual double use(double amount_needed)
     {
-        if (amountNeeded <= m_amount_g)
+        if (amount_needed <= m_amount_g)
         {
-            m_amount_g -= amountNeeded;
+            m_amount_g -= amount_needed;
         }
         return 0.0;
     }
 
-    virtual void refill(double amountToRefill)
+    virtual void refill(double amount_to_refill)
     {
-        if (amountToRefill > 0.0)
+        if (amount_to_refill > 0.0)
         {
-            m_amount_g += amountToRefill;
+            m_amount_g += amount_to_refill;
         }
     }
 };
@@ -46,45 +46,45 @@ public:
     Water(double amt, double calcium)
         : Ingredient("Water", amt), m_calcium_mgl(calcium) {}
 
-    double use(double amountNeeded) override
+    double use(double amount_needed) override
     {
-        Ingredient::use(amountNeeded);
-        return amountNeeded * (m_calcium_mgl / 1000.0);
+        Ingredient::use(amount_needed);
+        return amount_needed * (m_calcium_mgl / 1000.0);
     }
 };
 
 class Coffee : public Ingredient
 {
 private:
-    std::string m_roastDegree;
+    std::string m_roast_degree;
 
 public:
     Coffee(double amt, std::string roast)
-        : Ingredient("Coffee", amt), m_roastDegree(std::move(roast)) {}
+        : Ingredient("Coffee", amt), m_roast_degree(std::move(roast)) {}
 
-    std::string getRoastDegree() const { return m_roastDegree; }
+    std::string get_roast_degree() const { return m_roast_degree; }
 };
 
 class Milk : public Ingredient
 {
 private:
-    double m_expirationTime;
+    double m_expiration_time;
 
 public:
-    Milk(double amt, double expTime)
-        : Ingredient("Milk", amt), m_expirationTime(expTime) {}
+    Milk(double amt, double exp_time)
+        : Ingredient("Milk", amt), m_expiration_time(exp_time) {}
 
-    double getExpirationTime() const { return m_expirationTime; }
+    double get_expiration_time() const { return m_expiration_time; }
 
-    void refill(double amountToRefill) override
+    void refill(double amount_to_refill) override
     {
-        Ingredient::refill(amountToRefill);
-        m_expirationTime = 7.0;
+        Ingredient::refill(amount_to_refill);
+        m_expiration_time = 7.0;
     }
 
-    void checkExpiration() const
+    void check_expiration() const
     {
-        if (m_expirationTime <= 0.0)
+        if (m_expiration_time <= 0.0)
         {
             std::cout << " Warning: The milk has expired! Please refill to refresh.\n";
         }
