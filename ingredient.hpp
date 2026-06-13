@@ -36,4 +36,20 @@ public:
     }
 };
 
+class Water : public Ingredient
+{
+private:
+    double m_calcium_mgl;
+
+public:
+    Water(double amt, double calcium)
+        : Ingredient("Water", amt), m_calcium_mgl(calcium) {}
+
+    double use(double amountNeeded) override
+    {
+        Ingredient::use(amountNeeded);
+        return amountNeeded * (m_calcium_mgl / 1000.0);
+    }
+};
+
 #endif
