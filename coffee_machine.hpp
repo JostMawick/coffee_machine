@@ -46,6 +46,37 @@ public:
             std::cout << " * " << ing->get_name() << ": " << ing->get_amount() << "g remaining\n";
         }
     }
+
+    void brew(const Recipe &recipe)
+    {
+        std::cout << "\nStarting preparation for: " << recipe.get_name() << "\n";
+
+        if (m_limescale_g >= m_max_limescale_g)
+        {
+            std::cout << "Error: Machine is blocked due to limescale! Please clean it.\n";
+            return;
+        }
+
+        for (auto &ing : m_ingredients)
+        {
+            double needed = 0.0;
+
+            if (ing->get_name() == "Water")
+                needed = recipe.get_water_needed();
+            else if (ing->get_name() == "Coffee")
+                needed = recipe.get_coffee_needed();
+            else if (ing->get_name() == "Milk")
+                needed = recipe.get_milk_needed();
+
+            if (needed > 0.0)
+            {
+                double generated_waste = ing->use(needed);
+                m_limescale_g += generated_waste;
+            }
+        }
+
+        std::cout << "Your " << recipe.get_name() << " is ready!\n";
+    }
 };
 
 #endif
