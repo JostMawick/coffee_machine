@@ -1,8 +1,8 @@
 #include <iostream>
 #include <memory>
-#include "Ingredient.hpp"
-#include "Recipe.hpp"
-#include "CoffeeMachine.hpp"
+#include "ingredient.hpp"
+#include "recipe.hpp"
+#include "coffee_machine.hpp"
 
 int main()
 {
@@ -19,23 +19,42 @@ int main()
 
     machine.show_status();
 
-    machine.brew(espresso);
-    machine.brew(latte_macchiato);
-    machine.brew(americano);
+    char choice = ' ';
+    bool running = true;
 
-    machine.show_status();
+    while (running)
+    {
+        std::cout << "\nEnter command (e: Espresso, c: Cappuccino, l: Latte, a: Americano, s: Status, x: Clean, q: Quit): ";
+        std::cin >> choice;
 
-    machine.brew(cappuccino);
-    machine.brew(americano);
-
-    machine.show_status();
-
-    machine.brew(espresso);
-
-    machine.clean_limescale();
-    machine.show_status();
-
-    machine.brew(espresso);
+        switch (choice)
+        {
+        case 'e':
+            machine.brew(espresso);
+            break;
+        case 'c':
+            machine.brew(cappuccino);
+            break;
+        case 'l':
+            machine.brew(latte_macchiato);
+            break;
+        case 'a':
+            machine.brew(americano);
+            break;
+        case 's':
+            machine.show_status();
+            break;
+        case 'x':
+            machine.clean_limescale();
+            break;
+        case 'q':
+            running = false;
+            break;
+        default:
+            std::cout << "Invalid command!\n";
+            break;
+        }
+    }
 
     return 0;
 }
