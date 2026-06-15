@@ -10,14 +10,16 @@ class Ingredient
 protected:
     std::string m_name;
     double m_amount_g;
+    double m_max_amount_g;
 
 public:
-    Ingredient(std::string n, double amt) : m_name(std::move(n)), m_amount_g(amt) {}
+    Ingredient(std::string n, double amt) : m_name(std::move(n)), m_amount_g(amt), m_max_amount_g(amt) {}
 
     virtual ~Ingredient() = default;
 
     std::string get_name() const { return m_name; }
     double get_amount() const { return m_amount_g; }
+    double get_max_amount() const { return m_max_amount_g; }
 
     virtual double use(double amount_needed)
     {
@@ -34,6 +36,11 @@ public:
         if (amount_to_refill > 0.0)
         {
             m_amount_g += amount_to_refill;
+            if (m_amount_g > m_max_amount_g)
+            {
+                m_amount_g = m_max_amount_g;
+                std::cout << "Refilled " << m_name << " to maximum capacity (" << m_max_amount_g << "g).\n";
+            }
         }
     }
 };

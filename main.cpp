@@ -47,6 +47,9 @@ int main()
         case 'x':
             machine.clean_limescale();
             break;
+        case 'r':
+            machine.refill_all(1000.0);
+            break;
         case 'q':
             running = false;
             break;
