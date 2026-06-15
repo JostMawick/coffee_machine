@@ -22,6 +22,7 @@ public:
     double get_max_amount() const { return m_max_amount_g; }
 
     virtual void prepare() const = 0;
+    virtual int check_expiration() const { return 0; }
 
     virtual double use(double amount_needed)
     {
@@ -110,18 +111,31 @@ public:
 
     double get_expiration_time() const { return m_expiration_time; }
 
+    double use(double amount_needed) override
+    {
+        if (m_expiration_time <= 0.0)
+        {
+            return -2.0;
+        }
+        double result = Ingredient::use(amount_needed);
+        m_expiration_time -= 2.0;
+        return result;
+    }
+
     void refill(double amount_to_refill) override
     {
         Ingredient::refill(amount_to_refill);
-        m_expiration_time = 7.0;
+        m_expiration_time = 6.0;
     }
 
-    void check_expiration() const
+    int check_expiration() const override
     {
         if (m_expiration_time <= 0.0)
         {
             std::cout << " Warning: The milk has expired! Please refill to refresh.\n";
+            return -1;
         }
+        return 0;
     }
 };
 

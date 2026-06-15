@@ -84,6 +84,11 @@ public:
             else if (ing->get_name() == "Milk")
                 needed = recipe.get_milk_needed();
 
+            if ((needed > 0.0) && (ing->check_expiration() < 0))
+            {
+                throw MachineBlockedException(ing->get_name() + " has expired! Please refill to continue.");
+            }
+
             if (needed > ing->get_amount())
             {
                 throw MachineBlockedException("Not enough " + ing->get_name() + " for this recipe.");
@@ -103,6 +108,7 @@ public:
             if (needed > 0.0)
             {
                 double generated_waste = ing->use(needed);
+
                 if (generated_waste > 0.0)
                 {
                     m_limescale_g += generated_waste;
