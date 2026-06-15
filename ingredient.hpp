@@ -24,8 +24,9 @@ public:
         if (amount_needed <= m_amount_g)
         {
             m_amount_g -= amount_needed;
+            return 0.0;
         }
-        return 0.0;
+        return -1.0;
     }
 
     virtual void refill(double amount_to_refill)
@@ -48,8 +49,12 @@ public:
 
     double use(double amount_needed) override
     {
-        Ingredient::use(amount_needed);
-        return amount_needed * (m_calcium_mgl / 1000.0);
+        if (amount_needed <= m_amount_g)
+        {
+            Ingredient::use(amount_needed);
+            return amount_needed * (m_calcium_mgl / 1000.0);
+        }
+        return -1.0;
     }
 };
 

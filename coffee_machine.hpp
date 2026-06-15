@@ -4,8 +4,8 @@
 #include <vector>
 #include <memory>
 #include <iostream>
-#include "Ingredient.hpp"
-#include "Recipe.hpp"
+#include "ingredient.hpp"
+#include "recipe.hpp"
 
 class CoffeeMachine
 {
@@ -47,6 +47,15 @@ public:
         }
     }
 
+    void refill_all(double amount)
+    {
+        std::cout << "Refilling all ingredient containers...\n";
+        for (auto &ing : m_ingredients)
+        {
+            ing->refill(amount);
+        }
+    }
+
     void brew(const Recipe &recipe)
     {
         std::cout << "\nStarting preparation for: " << recipe.get_name() << "\n";
@@ -57,10 +66,26 @@ public:
             return;
         }
 
+        for (const auto &ing : m_ingredients)
+        {
+            double needed = 0.0;
+            if (ing->get_name() == "Water")
+                needed = recipe.get_water_needed();
+            else if (ing->get_name() == "Coffee")
+                needed = recipe.get_coffee_needed();
+            else if (ing->get_name() == "Milk")
+                needed = recipe.get_milk_needed();
+
+            if (needed > ing->get_amount())
+            {
+                std::cout << "Error: Not enough " << ing->get_name() << " to brew this recipe!\n";
+                return;
+            }
+        }
+
         for (auto &ing : m_ingredients)
         {
             double needed = 0.0;
-
             if (ing->get_name() == "Water")
                 needed = recipe.get_water_needed();
             else if (ing->get_name() == "Coffee")
@@ -71,7 +96,10 @@ public:
             if (needed > 0.0)
             {
                 double generated_waste = ing->use(needed);
-                m_limescale_g += generated_waste;
+                if (generated_waste > 0.0)
+                {
+                    m_limescale_g += generated_waste;
+                }
             }
         }
 
