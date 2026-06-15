@@ -55,4 +55,4 @@ No utilities from `<algorithm>` are included. All traversals and mutations acros
 
 ## UML
 
-![UML Class Diagram](UML.png)
+![UML Class Diagram](UML.PNG)
