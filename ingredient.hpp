@@ -45,6 +45,11 @@ public:
             }
         }
     }
+
+    bool operator<(const Ingredient &other) const
+    {
+        return m_amount_g < other.m_amount_g;
+    }
 };
 
 class Water : public Ingredient
