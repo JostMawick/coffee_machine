@@ -101,6 +101,7 @@ public:
                     m_limescale_g += generated_waste;
                 }
             }
+            ing->prepare();
         }
 
         std::cout << "Your " << recipe.get_name() << " is ready!\n";

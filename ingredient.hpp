@@ -21,6 +21,8 @@ public:
     double get_amount() const { return m_amount_g; }
     double get_max_amount() const { return m_max_amount_g; }
 
+    virtual void prepare() const = 0;
+
     virtual double use(double amount_needed)
     {
         if (amount_needed <= m_amount_g)
@@ -54,6 +56,11 @@ public:
     Water(double amt, double calcium)
         : Ingredient("Water", amt), m_calcium_mgl(calcium) {}
 
+    void prepare() const override
+    {
+        std::cout << "Heating water\n";
+    }
+
     double use(double amount_needed) override
     {
         if (amount_needed <= m_amount_g)
@@ -74,6 +81,11 @@ public:
     Coffee(double amt, std::string roast)
         : Ingredient("Coffee", amt), m_roast_degree(std::move(roast)) {}
 
+    void prepare() const override
+    {
+        std::cout << "Grinding coffee beans\n";
+    }
+
     std::string get_roast_degree() const { return m_roast_degree; }
 };
 
@@ -85,6 +97,11 @@ private:
 public:
     Milk(double amt, double exp_time)
         : Ingredient("Milk", amt), m_expiration_time(exp_time) {}
+
+    void prepare() const override
+    {
+        std::cout << "Frothing milk\n";
+    }
 
     double get_expiration_time() const { return m_expiration_time; }
 
