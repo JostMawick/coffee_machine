@@ -26,36 +26,42 @@ int main()
     {
         std::cout << "\nEnter command (e: Espresso, c: Cappuccino, l: Latte, a: Americano, s: Status, x: Clean, q: Quit): ";
         std::cin >> choice;
-
-        switch (choice)
+        try
         {
-        case 'e':
-            machine.brew(espresso);
-            break;
-        case 'c':
-            machine.brew(cappuccino);
-            break;
-        case 'l':
-            machine.brew(latte_macchiato);
-            break;
-        case 'a':
-            machine.brew(americano);
-            break;
-        case 's':
-            machine.show_status();
-            break;
-        case 'x':
-            machine.clean_limescale();
-            break;
-        case 'r':
-            machine.refill_all(1000.0);
-            break;
-        case 'q':
-            running = false;
-            break;
-        default:
-            std::cout << "Invalid command!\n";
-            break;
+            switch (choice)
+            {
+            case 'e':
+                machine.brew(espresso);
+                break;
+            case 'c':
+                machine.brew(cappuccino);
+                break;
+            case 'l':
+                machine.brew(latte_macchiato);
+                break;
+            case 'a':
+                machine.brew(americano);
+                break;
+            case 's':
+                machine.show_status();
+                break;
+            case 'x':
+                machine.clean_limescale();
+                break;
+            case 'r':
+                machine.refill_all(1000.0);
+                break;
+            case 'q':
+                running = false;
+                break;
+            default:
+                std::cout << "Invalid command!\n";
+                break;
+            }
+        }
+        catch (const MachineBlockedException &e)
+        {
+            std::cout << "Error: " << e.what() << "\n";
         }
     }
 

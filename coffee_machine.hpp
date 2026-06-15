@@ -4,8 +4,17 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <stdexcept>
+#include <string>
 #include "ingredient.hpp"
 #include "recipe.hpp"
+
+class MachineBlockedException : public std::runtime_error
+{
+public:
+    explicit MachineBlockedException(const std::string &reason)
+        : std::runtime_error("Machine Error: " + reason) {}
+};
 
 class CoffeeMachine
 {
@@ -62,8 +71,7 @@ public:
 
         if (m_limescale_g >= m_max_limescale_g)
         {
-            std::cout << "Error: Machine is blocked due to limescale! Please clean it.\n";
-            return;
+            throw MachineBlockedException("Blocked due to limescale! Please clean it.");
         }
 
         for (const auto &ing : m_ingredients)
@@ -78,8 +86,7 @@ public:
 
             if (needed > ing->get_amount())
             {
-                std::cout << "Error: Not enough " << ing->get_name() << " to brew this recipe!\n";
-                return;
+                throw MachineBlockedException("Not enough " + ing->get_name() + " for this recipe.");
             }
         }
 
@@ -100,8 +107,8 @@ public:
                 {
                     m_limescale_g += generated_waste;
                 }
+                ing->prepare();
             }
-            ing->prepare();
         }
 
         std::cout << "Your " << recipe.get_name() << " is ready!\n";
